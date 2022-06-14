@@ -9,7 +9,7 @@ import (
 func HelloWorld(c *gin.Context) {
 	str, ok := c.GetQuery("name")
 	if !ok {
-		str = "gin"
+		str = "gin1"
 	}
 	response.Success(c, fmt.Sprintf("hello %s", str))
 }
