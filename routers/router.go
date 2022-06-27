@@ -1,39 +1,50 @@
 package routers
 
 import (
-	"app/config"
-	"github.com/gin-gonic/gin"
+	"app/middleware"
+	"app/pkg/error_code"
+	"app/pkg/response"
 	"net/http"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
-func SetRouters() *gin.Engine {
-	var r *gin.Engine
-	if config.Config.Debug == false {
-		// 生产模式
-		//r = ReleaseRouter()
-		//r.Use(
-		//	middleware.RequestCostHandler(),
-		//	middleware.CustomLogger(),
-		//	middleware.CustomRecovery(),
-		//	middleware.CorsHandler(),
-		//)
-	} else {
-		// 开发调试模式
-		r = gin.New()
-		//r.Use(
-		//	middleware.RequestCostHandler(),
-		//	gin.Logger(),
-		//	middleware.CustomRecovery(),
-		//	middleware.CorsHandler(),
-		//)
-	}
-	// ping
-	r.GET("/ping", func(c *gin.Context) {
-		c.AbortWithStatusJSON(http.StatusOK, gin.H{
-			"message": "pong!",
-		})
+func Router() *gin.Engine {
+	r := gin.New()
+	r.NoRoute(func(context *gin.Context) {
+		response.Fail(context, http.StatusNotFound, error_code.Text(http.StatusNotFound))
 	})
-	// 设置 API 路由
-	setApiRoute(r)
+	r.NoMethod(func(context *gin.Context) {
+		response.Fail(context, http.StatusMethodNotAllowed, error_code.Text(http.StatusNotFound))
+	})
+	unauthorizedGroup := r.Group("/api")
+	{
+		unauthorizedGroup.Use(cors.Default())
+		unauthorizedGroup.Use(middleware.LoggerToFile())
+
+		PingRouter(unauthorizedGroup)
+		LoginRouter(unauthorizedGroup)
+	}
+	// LoginPwdRouter(unauthorizedGroup)
+	// SwaggerRouter(unauthorizedGroup)
+
+	// authorizedGroup := r.Group("/api", gin.BasicAuth(gin.Accounts{
+	// 	"foo":    "bar",
+	// 	"austin": "1234",
+	// 	"lena":   "hello2",
+	// 	"manu":   "4321",
+	// }))
+	authorizedGroup := r.Group("/api")
+	{
+		authorizedGroup.Use(cors.Default())
+		authorizedGroup.Use(middleware.LoggerToFile())
+		authorizedGroup.Use(middleware.JWTAuth())
+
+		PingAuthRouter(authorizedGroup)
+	}
+	// SysDictTypeRouter(authorizedGroup)
+	// SysDictDataRouter(authorizedGroup)
+	// DistrictRouter(authorizedGroup)
 	return r
 }

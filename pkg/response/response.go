@@ -2,9 +2,10 @@ package response
 
 import (
 	"app/pkg/error_code"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Resp() *Response {
@@ -30,12 +31,12 @@ func Success(c *gin.Context, data ...any) {
 }
 
 // Fail 业务失败响应
-func Fail(c *gin.Context, code int, data ...any) {
+func Fail(c *gin.Context, code int, message string, data ...any) {
 	if data != nil {
-		Resp().WithData(data[0]).FailCode(c, code)
+		Resp().WithData(data[0]).FailCode(c, code, message)
 		return
 	}
-	Resp().FailCode(c, code)
+	Resp().FailCode(c, code, message)
 }
 
 type result struct {
@@ -51,8 +52,11 @@ type Response struct {
 }
 
 // Fail 错误返回
-func (r *Response) Fail(c *gin.Context) {
+func (r *Response) Fail(c *gin.Context, msg ...string) {
 	r.SetCode(error_code.FAILURE)
+	if msg != nil {
+		r.WithMessage(msg[0])
+	}
 	r.json(c)
 }
 
@@ -90,15 +94,15 @@ func (r *Response) SetHttpCode(code int) *Response {
 	return r
 }
 
-type defaultRes struct {
-	Result any `json:"result"`
-}
+// type defaultRes struct {
+// 	Result any `json:"result"`
+// }
 
 // WithData 设置返回data数据
 func (r *Response) WithData(data interface{}) *Response {
 	switch data.(type) {
 	case string, int, bool:
-		r.result.Data = &defaultRes{Result: data}
+		r.result.Data = data
 	default:
 		r.result.Data = data
 	}

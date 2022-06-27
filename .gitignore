@@ -19,4 +19,6 @@
 storage
 config.yaml
 config.ini
-gin-layout
+app
+tmp
+*.log
