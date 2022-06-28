@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"app/pkg/error_code"
 	"fmt"
+	"order-food-service/pkg/error_code"
 
 	"github.com/go-playground/validator/v10"
 )

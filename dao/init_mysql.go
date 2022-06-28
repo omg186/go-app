@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"app/global"
 	"fmt"
+	"order-food-service/global"
 	"time"
 
 	"github.com/sirupsen/logrus"

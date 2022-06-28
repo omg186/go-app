@@ -22,3 +22,4 @@ config.ini
 app
 tmp
 *.log
+go.sum

@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"app/middleware"
-	"app/pkg/error_code"
-	"app/pkg/response"
 	"net/http"
+	"order-food-service/middleware"
+	"order-food-service/pkg/error_code"
+	"order-food-service/pkg/response"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

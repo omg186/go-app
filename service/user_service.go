@@ -1,8 +1,8 @@
 package service
 
 import (
-	"app/dao"
-	"app/entitys"
+	"order-food-service/dao"
+	"order-food-service/entitys"
 )
 
 type UserService struct{}

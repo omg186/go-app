@@ -1,10 +1,10 @@
 package main
 
 import (
-	"app/dao"
-	"app/global"
-	"app/routers"
 	"flag"
+	"order-food-service/dao"
+	"order-food-service/global"
+	"order-food-service/routers"
 )
 
 var (

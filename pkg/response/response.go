@@ -1,8 +1,8 @@
 package response
 
 import (
-	"app/pkg/error_code"
 	"net/http"
+	"order-food-service/pkg/error_code"
 	"time"
 
 	"github.com/gin-gonic/gin"

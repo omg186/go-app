@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"app/entitys"
 	"errors"
 	"fmt"
+	"order-food-service/entitys"
 	"time"
 
 	"github.com/dgrijalva/jwt-go/v4"

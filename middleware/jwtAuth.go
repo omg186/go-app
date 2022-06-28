@@ -1,13 +1,13 @@
 package middleware
 
 import (
-	"app/pkg/error_code"
-	"app/pkg/response"
-	"app/pkg/utils"
-	"app/service"
 	"errors"
 	"log"
 	"net/http"
+	"order-food-service/pkg/error_code"
+	"order-food-service/pkg/response"
+	"order-food-service/pkg/utils"
+	"order-food-service/service"
 	"strings"
 
 	"github.com/gin-gonic/gin"

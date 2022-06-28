@@ -1,9 +1,9 @@
 package service
 
 import (
-	"app/pkg/error_code"
-	"app/pkg/utils"
 	"errors"
+	"order-food-service/pkg/error_code"
+	"order-food-service/pkg/utils"
 )
 
 type LoginService struct{}

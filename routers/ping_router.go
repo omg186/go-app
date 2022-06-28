@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"app/api"
+	"order-food-service/api"
 
 	"github.com/gin-gonic/gin"
 )

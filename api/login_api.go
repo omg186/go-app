@@ -1,12 +1,12 @@
 package api
 
 import (
-	loginDto "app/dto/login_dto"
-	"app/global"
-	"app/pkg/response"
-	"app/pkg/utils"
-	"app/service"
 	"net/http"
+	loginDto "order-food-service/dto/login_dto"
+	"order-food-service/global"
+	"order-food-service/pkg/response"
+	"order-food-service/pkg/utils"
+	"order-food-service/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"

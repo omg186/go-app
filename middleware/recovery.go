@@ -1,11 +1,11 @@
 package middleware
 
 // import (
-// 	"app/config"
-// 	"app/pkg/error_code"
+// 	"order-food-service/config"
+// 	"order-food-service/pkg/error_code"
 
-// 	// "app/pkg/logger"
-// 	response2 "app/pkg/response"
+// 	// "order-food-service/pkg/logger"
+// 	response2 "order-food-service/pkg/response"
 // 	"errors"
 // 	"fmt"
 // 	"net/http"

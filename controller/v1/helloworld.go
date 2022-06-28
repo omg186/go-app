@@ -1,8 +1,9 @@
 package v1
 
 import (
-	"app/pkg/response"
 	"fmt"
+	"order-food-service/pkg/response"
+
 	"github.com/gin-gonic/gin"
 )
 

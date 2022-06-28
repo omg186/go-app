@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"app/entitys"
-	"app/global"
+	"order-food-service/entitys"
+	"order-food-service/global"
 )
 
 type UserDao struct{}

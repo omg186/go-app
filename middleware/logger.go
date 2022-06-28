@@ -1,7 +1,7 @@
 package middleware
 
 // import (
-// 	log "app/pkg/logger"
+// 	log "order-food-service/pkg/logger"
 // 	"bytes"
 // 	"time"
 
