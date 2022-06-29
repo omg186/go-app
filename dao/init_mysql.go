@@ -62,6 +62,6 @@ func Init(MYSQL_USER_NAME string, MYSQL_PASSWORD string, MYSQL_URL string, MYSQL
 	// db.Re
 	sqlDb.SetMaxIdleConns(MYSQL_MAX_IDLE_CONNS) //设置最大连接数
 	sqlDb.SetMaxOpenConns(MYSQL_MAX_OPEN_CONNS) //设置最大的空闲连接数
-	db.AutoMigrate(&entitys.User{})
+	db.AutoMigrate(&entitys.User{}, &entitys.Role{}, &entitys.Category{})
 	return db
 }
