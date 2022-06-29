@@ -11,5 +11,5 @@ type User struct {
 	Avatar   string `gorm:"comment:头像"`
 	Desc     string `gorm:"comment:描述"`
 	HomePath string `gorm:"comment:主页"`
-	RoleList []Role `gorm:"many2many:user_role_rel"`
+	Roles    []Role `gorm:"many2many:user_role_rel"`
 }

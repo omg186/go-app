@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"order-food-service/pkg/error_code"
 	"order-food-service/pkg/response"
@@ -22,7 +21,7 @@ func JWTAuth() gin.HandlerFunc {
 			ctx.Abort() //结束后续操作
 			return
 		}
-		log.Print("token:", authHeader)
+		// log.Print("token:", authHeader)
 
 		//按空格拆分
 		parts := strings.SplitN(authHeader, " ", 2)

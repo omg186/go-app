@@ -9,4 +9,5 @@ import (
 func LoginRouter(r *gin.RouterGroup) {
 	apiLogin := api.LoginApi{}
 	r.POST("/login", apiLogin.Login)
+	r.GET("/loginout", apiLogin.LoginOut)
 }

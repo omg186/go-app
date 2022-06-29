@@ -19,6 +19,7 @@ type LoginRes struct {
 }
 
 // @Tags Login
+// @Id Login
 // @Name LoginUser
 // @Summary 用户名密码登陆
 // @Param body body dto.LoginRequest true "登陆参数"
@@ -46,12 +47,14 @@ func (l *LoginApi) Login(c *gin.Context) {
 	response.Success(c, LoginRes{Token: token})
 }
 
+// @Tags Login
+// @name LoginOut
 // @Summary 退出登录
-// @Description 退出登录
-// @Tags Posts
 // @Produce json
-// @Success 200 {string} string "ok" "返回用户信息"
-// @Router /api/OutLogin [post]
-func OutLogin(c *gin.Context) {
-
+// @Success 200 {object} response.Result "ok"
+// @Router /loginout [get]
+func (l *LoginApi) LoginOut(c *gin.Context) {
+	// authHeader := c.Request.Header.Get("Authorization")
+	// utils.RefreshToken(authHeader)
+	response.Success(c)
 }

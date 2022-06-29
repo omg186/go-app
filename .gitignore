@@ -20,6 +20,6 @@ storage
 config.yaml
 config.ini
 app
-tmp
+./tmp
 *.log
-go.sum
+./go.sum

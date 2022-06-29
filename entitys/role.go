@@ -8,4 +8,5 @@ type Role struct {
 	RoleName string `gorm:"comment:角色名称"`
 	Value    string `gorm:"comment:编码"`
 	Desc     string `gorm:"comment:描述信息"`
+	Users    []User `gorm:"many2many:user_role_rel"`
 }

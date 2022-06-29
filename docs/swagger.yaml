@@ -18,6 +18,20 @@ definitions:
     - passWord
     - userName
     type: object
+  dto.RoleRes:
+    properties:
+      desc:
+        description: 描述
+        type: string
+      id:
+        type: integer
+      roleName:
+        description: 角色名
+        type: string
+      value:
+        description: 角色code
+        type: string
+    type: object
   dto.UserRes:
     properties:
       avatr:
@@ -34,8 +48,11 @@ definitions:
       realName:
         description: 真实姓名
         type: string
-      roleList:
+      roles:
         description: 角色
+        items:
+          $ref: '#/definitions/dto.RoleRes'
+        type: array
       userName:
         description: 登录名
         type: string
@@ -44,7 +61,7 @@ definitions:
     properties:
       code:
         description: 业务code 0 代表成功
-        type: integer
+        type: string
       cost:
         type: string
       data:
@@ -66,21 +83,74 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
-  /api/OutLogin:
+  /login:
     post:
-      description: 退出登录
+      consumes:
+      - application/json
+      operationId: Login
+      parameters:
+      - description: 登陆参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
-          description: ok" "返回用户信息
+          description: 成功返回
           schema:
-            type: string
+            allOf:
+            - $ref: '#/definitions/response.Result'
+            - properties:
+                data:
+                  $ref: '#/definitions/api.LoginRes'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Result'
+            - properties:
+                message:
+                  type: string
+              type: object
+      summary: 用户名密码登陆
+      tags:
+      - Login
+  /loginout:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: '#/definitions/response.Result'
       summary: 退出登录
       tags:
-      - Posts
-  /login:
-    post:
+      - Login
+  /ping:
+    get:
+      consumes:
+      - multipart/form-data
+      description: 向你说Hello
+      operationId: Ping
+      parameters:
+      - description: 人名
+        in: query
+        name: who
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: 测试SayHello
+      tags:
+      - Ping
+  /userInfo:
+    get:
       consumes:
       - application/json
       parameters:
@@ -101,34 +171,12 @@ paths:
                 data:
                   $ref: '#/definitions/dto.UserRes'
               type: object
-        "401":
-          description: token无效
-          schema:
-            $ref: '#/definitions/response.Result'
-      summary: 用户名密码登陆
+      summary: 查询登录用户信息
       tags:
       - User
-  /ping:
-    get:
-      consumes:
-      - multipart/form-data
-      description: 向你说Hello
-      operationId: Ping
-      parameters:
-      - description: 人名
-        in: query
-        name: who
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses: {}
-      summary: 测试SayHello
-      tags:
-      - Ping
 swagger: "2.0"
 tags:
-- description: Login
+- description: 登录
   name: Login
-- description: User
+- description: 用户
   name: User

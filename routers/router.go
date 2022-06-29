@@ -42,8 +42,9 @@ func Router() *gin.Engine {
 		authorizedGroup.Use(cors.Default())
 		authorizedGroup.Use(middleware.LoggerToFile())
 		authorizedGroup.Use(middleware.JWTAuth())
-
 		PingAuthRouter(authorizedGroup)
+
+		UserRouter(authorizedGroup)
 	}
 	// SysDictTypeRouter(authorizedGroup)
 	// SysDictDataRouter(authorizedGroup)

@@ -8,5 +8,5 @@ import (
 
 func UserRouter(r *gin.RouterGroup) {
 	apiUser := api.UserApi{}
-	r.GET("/getUserInfo", apiUser.GetUserInfo)
+	r.GET("/userInfo", apiUser.GetUserInfo)
 }

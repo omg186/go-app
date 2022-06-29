@@ -37,9 +37,9 @@ var (
 
 // @BasePath /api
 // @tag.name Login
-// @tag.description Login
+// @tag.description 登录
 // @tag.name User
-// @tag.description User
+// @tag.description 用户
 func main() {
 	flag.Parse()
 	//初始化MySQL

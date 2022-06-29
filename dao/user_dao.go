@@ -11,7 +11,9 @@ type UserDao struct{}
 
 func (d *UserDao) GetUserNamePassword(userName string, password string) (*entitys.User, error) {
 	var entity entitys.User
-	err := DB.Where("user_n2ame = ? and password = ?", userName, password).First(&entity).Error
+	// err := DB.Where("user_name = ? and password = ?", userName, password).Joins().First(&entity).Error
+	// err := DB.Joins("Role").First(&entity, "user_name = ? and password = ?", userName, password).Error
+	err := DB.Preload("Roles").Where("user_name = ? and password = ?", userName, password).First(&entity).Error
 	// DB.Re
 	// if entity.ID != 0 {
 	// 	return &entity, nil

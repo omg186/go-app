@@ -25,26 +25,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/OutLogin": {
-            "post": {
-                "description": "退出登录",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Posts"
-                ],
-                "summary": "退出登录",
-                "responses": {
-                    "200": {
-                        "description": "ok\" \"返回用户信息",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "consumes": [
@@ -54,16 +34,19 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Login"
                 ],
                 "summary": "用户名密码登陆",
+                "operationId": "Login",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "description": "登陆参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -78,15 +61,46 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/dto.UserRes"
+                                            "$ref": "#/definitions/api.LoginRes"
                                         }
                                     }
                                 }
                             ]
                         }
                     },
-                    "401": {
-                        "description": "token无效",
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Result"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/loginout": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "退出登录",
+                "responses": {
+                    "200": {
+                        "description": "ok",
                         "schema": {
                             "$ref": "#/definitions/response.Result"
                         }
@@ -119,6 +133,49 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/userInfo": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "查询登录用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功返回",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Result"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.UserRes"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -148,6 +205,26 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.RoleRes": {
+            "type": "object",
+            "properties": {
+                "desc": {
+                    "description": "描述",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "roleName": {
+                    "description": "角色名",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "角色code",
+                    "type": "string"
+                }
+            }
+        },
         "dto.UserRes": {
             "type": "object",
             "properties": {
@@ -170,8 +247,12 @@ const docTemplate = `{
                     "description": "真实姓名",
                     "type": "string"
                 },
-                "roleList": {
-                    "description": "角色"
+                "roles": {
+                    "description": "角色",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.RoleRes"
+                    }
                 },
                 "userName": {
                     "description": "登录名",
@@ -184,7 +265,7 @@ const docTemplate = `{
             "properties": {
                 "code": {
                     "description": "业务code 0 代表成功",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "cost": {
                     "type": "string"
@@ -201,11 +282,11 @@ const docTemplate = `{
     },
     "tags": [
         {
-            "description": "Login",
+            "description": "登录",
             "name": "Login"
         },
         {
-            "description": "User",
+            "description": "用户",
             "name": "User"
         }
     ]

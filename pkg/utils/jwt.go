@@ -6,7 +6,7 @@ import (
 	"order-food-service/entitys"
 	"time"
 
-	"github.com/dgrijalva/jwt-go/v4"
+	"github.com/golang-jwt/jwt"
 )
 
 type Users struct {
@@ -14,19 +14,25 @@ type Users struct {
 }
 
 type CustomClaims struct {
-	entitys.User
+	Id       int
+	UserName string
+	Password string
 	jwt.StandardClaims
 }
 
 var MySecret = []byte("密钥")
 
 // 创建 Token
-func GenToken(user entitys.User) (string, error) {
+func GenToken(id int, userName string, password string) (string, error) {
 	claim := CustomClaims{
-		user,
-		jwt.StandardClaims{
-			ExpiresAt: jwt.At(time.Now().Add(time.Minute * 5)), //5分钟后过期
-			Issuer:    "xx",                                    //签发人
+		Id:       id,
+		UserName: userName,
+		Password: password,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Minute * 60).Unix(), //60分钟后过期
+			// 签名时间
+			IssuedAt: time.Now().Unix(),
+			Issuer:   "test", //签发人
 		},
 	}
 
@@ -63,8 +69,8 @@ func RefreshToken(tokenStr string) (string, error) {
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		jwt.TimeFunc = time.Now
-		claims.StandardClaims.ExpiresAt = jwt.At(time.Now().Add(time.Minute * 10))
-		return GenToken(entitys.User{})
+		claims.StandardClaims.ExpiresAt = time.Now().Add(time.Minute * 60).Unix()
+		return GenToken(claims.Id, claims.UserName, claims.Password)
 	}
 	error := errors.New("Cloudn't handle this token")
 	return "", error

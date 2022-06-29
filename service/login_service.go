@@ -19,7 +19,7 @@ func (s *LoginService) Login(userName string, password string) (string, error) {
 	if user == nil {
 		return "", errors.New(error_code.LoginIsInvalid)
 	}
-	token, tokenErr := utils.GenToken(*user)
+	token, tokenErr := utils.GenToken(int(user.ID), user.UserName, user.Password)
 	if tokenErr != nil {
 		return "", tokenErr
 	}
