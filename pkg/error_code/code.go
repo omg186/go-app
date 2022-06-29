@@ -1,21 +1,22 @@
 package error_code
 
 const (
-	SUCCESS            = 0
-	FAILURE            = 1
-	StatusUnauthorized = 401
-	NotFound           = 404
-	ParamBindError     = 10000
-	ParamRequired      = 10001
-	ParamInvalid       = 10002
-	ServerError        = 10101
-	TooManyRequests    = 10102
-	AuthorizationError = 10103
-	RBACError          = 10104
-	LoginIsInvalid     = 10105
+	SUCCESS                = "0"
+	FAILURE                = "1"
+	StatusUnauthorized     = "401"
+	ParamRequired          = "400"
+	NotFound               = "404"
+	StatusMethodNotAllowed = "405"
+	ServerError            = "500"
+	ParamBindError         = "10000"
+	TooManyRequests        = "10102"
+	AuthorizationError     = "10103"
+	RBACError              = "10104"
+	LoginIsInvalid         = "10105"
+	UserNotFound           = "20000"
 )
 
-func Text(code int) (str string) {
+func Text(code string) (str string) {
 	lang := "zh_CN" //config.Config.Language
 
 	var ok bool
@@ -28,7 +29,7 @@ func Text(code int) (str string) {
 		break
 	}
 	if !ok {
-		return "unknown error"
+		return code + "unknown error"
 	}
 	return
 }

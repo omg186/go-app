@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	SERVER_PORT          = flag.String("server_port", "9999", "server port")
+	SERVER_PORT          = flag.String("server_port", "9990", "server port")
 	MYSQL_USER_NAME      = flag.String("username", "root", "mysql user name")
 	MYSQL_PASSWORD       = flag.String("password", "12345678", "mysql password")
 	MYSQL_URL            = flag.String("url", "localhost", "mysql url")
@@ -23,6 +23,23 @@ var (
 	REDIS_POOL_SIZE = flag.Int("redis_pool_size", 100, "redis pool size")
 )
 
+// @title Swagger Example API
+// @version 1.0
+// @description This is a sample server celler server.
+// @termsOfService https://razeen.me
+
+// @contact.name Razeen
+// @contact.url https://razeen.me
+// @contact.email me@razeen.me
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @BasePath /api
+// @tag.name Login
+// @tag.description Login
+// @tag.name User
+// @tag.description User
 func main() {
 	flag.Parse()
 	//初始化MySQL

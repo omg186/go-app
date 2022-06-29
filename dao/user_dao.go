@@ -3,16 +3,26 @@ package dao
 import (
 	"order-food-service/entitys"
 	"order-food-service/global"
+
+	"gorm.io/gorm"
 )
 
 type UserDao struct{}
 
-func (d *UserDao) GetUserNamePassword(userName string, password string) *entitys.User {
+func (d *UserDao) GetUserNamePassword(userName string, password string) (*entitys.User, error) {
 	var entity entitys.User
-	err := DB.Where("name = ? and password = ?", userName, password).First(&entity).Error
+	err := DB.Where("user_n2ame = ? and password = ?", userName, password).First(&entity).Error
+	// DB.Re
+	// if entity.ID != 0 {
+	// 	return &entity, nil
+	// }
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
 		global.AppLog.Error(err)
-		return nil
+		// panic(err)
+		return nil, err
 	}
-	return &entity
+	return &entity, nil
 }

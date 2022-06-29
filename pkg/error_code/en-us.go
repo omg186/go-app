@@ -1,6 +1,6 @@
 package error_code
 
-var enUSText = map[int]string{
+var enUSText = map[string]string{
 	SUCCESS:            "OK",
 	FAILURE:            "FAIL",
 	NotFound:           "resources not found",

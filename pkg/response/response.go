@@ -3,6 +3,7 @@ package response
 import (
 	"net/http"
 	"order-food-service/pkg/error_code"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,8 +13,8 @@ func Resp() *Response {
 	// 初始化response
 	return &Response{
 		httpCode: http.StatusOK,
-		result: &result{
-			Code:    0,
+		result: &Result{
+			Code:    "0",
 			Message: "",
 			Data:    nil,
 			Cost:    "",
@@ -31,7 +32,7 @@ func Success(c *gin.Context, data ...any) {
 }
 
 // Fail 业务失败响应
-func Fail(c *gin.Context, code int, message string, data ...any) {
+func Fail(c *gin.Context, code string, message string, data ...any) {
 	if data != nil {
 		Resp().WithData(data[0]).FailCode(c, code, message)
 		return
@@ -39,16 +40,16 @@ func Fail(c *gin.Context, code int, message string, data ...any) {
 	Resp().FailCode(c, code, message)
 }
 
-type result struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+type Result struct {
+	Code    string      `json:"code"`    // 业务code 0 代表成功
+	Message string      `json:"message"` // 提示信息
+	Data    interface{} `json:"data"`    // 成功返回的数据
 	Cost    string      `json:"cost"`
 }
 
 type Response struct {
 	httpCode int
-	result   *result
+	result   *Result
 }
 
 // Fail 错误返回
@@ -61,7 +62,14 @@ func (r *Response) Fail(c *gin.Context, msg ...string) {
 }
 
 // FailCode 自定义错误码返回
-func (r *Response) FailCode(c *gin.Context, code int, msg ...string) {
+func (r *Response) FailCode(c *gin.Context, code string, msg ...string) {
+	// var newCode string
+	codeInt, err := strconv.Atoi(code)
+	if err == nil {
+		if codeInt <= 500 {
+			r.SetHttpCode(codeInt)
+		}
+	}
 	r.SetCode(code)
 	if msg != nil {
 		r.WithMessage(msg[0])
@@ -83,7 +91,7 @@ func (r *Response) WithDataSuccess(c *gin.Context, data interface{}) {
 }
 
 // SetCode 设置返回code码
-func (r *Response) SetCode(code int) *Response {
+func (r *Response) SetCode(code string) *Response {
 	r.result.Code = code
 	return r
 }

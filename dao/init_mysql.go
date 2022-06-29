@@ -2,6 +2,7 @@ package dao
 
 import (
 	"fmt"
+	"order-food-service/entitys"
 	"order-food-service/global"
 	"time"
 
@@ -50,15 +51,17 @@ func Init(MYSQL_USER_NAME string, MYSQL_PASSWORD string, MYSQL_URL string, MYSQL
 	)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: slowLogger,
+		Logger:                                   slowLogger,
+		DisableForeignKeyConstraintWhenMigrating: true, // 禁止外键约束
 	})
 	if err != nil {
 		global.AppLog.Error(err)
 	}
 
 	sqlDb, _ := db.DB()
+	// db.Re
 	sqlDb.SetMaxIdleConns(MYSQL_MAX_IDLE_CONNS) //设置最大连接数
 	sqlDb.SetMaxOpenConns(MYSQL_MAX_OPEN_CONNS) //设置最大的空闲连接数
-
+	db.AutoMigrate(&entitys.User{})
 	return db
 }

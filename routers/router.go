@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"net/http"
 	"order-food-service/middleware"
 	"order-food-service/pkg/error_code"
 	"order-food-service/pkg/response"
@@ -11,18 +10,21 @@ import (
 )
 
 func Router() *gin.Engine {
-	r := gin.New()
+	// r := gin.New()
+	r := gin.Default()
+	// r.
 	r.NoRoute(func(context *gin.Context) {
-		response.Fail(context, http.StatusNotFound, error_code.Text(http.StatusNotFound))
+		response.Fail(context, error_code.NotFound, error_code.Text(error_code.NotFound))
 	})
 	r.NoMethod(func(context *gin.Context) {
-		response.Fail(context, http.StatusMethodNotAllowed, error_code.Text(http.StatusNotFound))
+		response.Fail(context, error_code.StatusMethodNotAllowed, error_code.Text(error_code.StatusMethodNotAllowed))
 	})
 	unauthorizedGroup := r.Group("/api")
 	{
 		unauthorizedGroup.Use(cors.Default())
 		unauthorizedGroup.Use(middleware.LoggerToFile())
 
+		SwaggerRouter(unauthorizedGroup)
 		PingRouter(unauthorizedGroup)
 		LoginRouter(unauthorizedGroup)
 	}

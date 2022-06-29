@@ -55,12 +55,12 @@ func JWTAuth() gin.HandlerFunc {
 
 //检查用户名信息
 func CheckUserInfo(claims *utils.CustomClaims) error {
-	username := claims.Name
+	username := claims.UserName
 	password := claims.Password
 	userService := service.UserService{}
-	user := userService.GetUserNamePassword(username, password)
-	if user == nil {
-		return errors.New("User not found")
+	user, err := userService.GetUserNamePassword(username, password)
+	if err != nil {
+		return errors.New(error_code.UserNotFound)
 	}
 	// userDao := dao.UserDao{}
 	// user, err = userDao.(username, password)
@@ -68,8 +68,8 @@ func CheckUserInfo(claims *utils.CustomClaims) error {
 	// 	return err
 	// }
 	//获取数据库用户名及密码
-	if username == user.Name && password == user.Password {
+	if username == user.UserName && password == user.Password {
 		return nil
 	}
-	return errors.New("用户密码错误")
+	return errors.New("用户名密码错误")
 }

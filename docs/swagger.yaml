@@ -1,0 +1,134 @@
+basePath: /api
+definitions:
+  api.LoginRes:
+    properties:
+      token:
+        description: token
+        type: string
+    type: object
+  dto.LoginRequest:
+    properties:
+      passWord:
+        description: 密码
+        type: string
+      userName:
+        description: 用户名
+        type: string
+    required:
+    - passWord
+    - userName
+    type: object
+  dto.UserRes:
+    properties:
+      avatr:
+        description: 头像
+        type: string
+      desc:
+        description: 描述
+        type: string
+      homePath:
+        description: 主页路径
+        type: string
+      id:
+        type: integer
+      realName:
+        description: 真实姓名
+        type: string
+      roleList:
+        description: 角色
+      userName:
+        description: 登录名
+        type: string
+    type: object
+  response.Result:
+    properties:
+      code:
+        description: 业务code 0 代表成功
+        type: integer
+      cost:
+        type: string
+      data:
+        description: 成功返回的数据
+      message:
+        description: 提示信息
+        type: string
+    type: object
+info:
+  contact:
+    email: me@razeen.me
+    name: Razeen
+    url: https://razeen.me
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://razeen.me
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /api/OutLogin:
+    post:
+      description: 退出登录
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok" "返回用户信息
+          schema:
+            type: string
+      summary: 退出登录
+      tags:
+      - Posts
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功返回
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Result'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserRes'
+              type: object
+        "401":
+          description: token无效
+          schema:
+            $ref: '#/definitions/response.Result'
+      summary: 用户名密码登陆
+      tags:
+      - User
+  /ping:
+    get:
+      consumes:
+      - multipart/form-data
+      description: 向你说Hello
+      operationId: Ping
+      parameters:
+      - description: 人名
+        in: query
+        name: who
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: 测试SayHello
+      tags:
+      - Ping
+swagger: "2.0"
+tags:
+- description: Login
+  name: Login
+- description: User
+  name: User

@@ -7,5 +7,6 @@ import (
 )
 
 func LoginRouter(r *gin.RouterGroup) {
-	r.POST("/login", api.Login)
+	apiLogin := api.LoginApi{}
+	r.POST("/login", apiLogin.Login)
 }
